@@ -17,11 +17,11 @@ int main() {
 
     int rolled;
     while(!game.gameEnded()){
-        cout << "Your turn " << players[game.getTurn()] << endl;
+        cout << "Your turn " << players[game.getTurn()]->getName() << endl;
         rolled = game.rollDice();
-        cout << "You rolled" << rolled << endl;
+        cout << "You rolled " << rolled << endl;
         game.movePlayer(players[game.getTurn()],rolled);
-        
+
         game.nextTurn();
     }
 }

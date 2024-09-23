@@ -14,10 +14,12 @@ public:
     Player(const string& n) : name(n){}
     string getName(){ return name; }
     int getBalance(){ return balance; }
-    void move(int steps, int boardSize){ position = (position+steps)%boardSize; };
     int getPosition(){ return position;}
+    vector<shared_ptr<Property>> getProperties(){ return ownedProperties; }
+
+    void move(int steps, int boardSize){ position = (position+steps)%boardSize; };
     void changeBalance(int amount){ balance += amount; };
-    void buyProperty(std::shared_ptr<Property> property);
+    void addProperty(shared_ptr<Property> p){ ownedProperties.push_back(p); };
     void goToJail();
     void releaseFromJail();
     bool isBankrupt() const;

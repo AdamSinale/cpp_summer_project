@@ -21,11 +21,28 @@ void Game::movePlayer(shared_ptr<Player>& p, int rolled){
     p->move(rolled,board->boardSize());
     cout << "You're now at " << p->getPosition() << endl;
     shared_ptr<Property> curPos = board->getProperty(p->getPosition());
+
+    if(curPos->getOwner() == p){ curPos->handleOwned(); }
+    else if(curPos->getOwner() == nullptr){
+        if(p->getBalance() < curPos->getPrice()){ cout<<"Can't buy"<<endl; return;}
+        char ans;
+        cout << "Wanna buy? (y/n)" << endl;
+        cin >> ans;
+        if(ans=='y' || ans=='Y'){ 
+            curPos->setOwner(p); 
+            p->addProperty(curPos);
+            p->changeBalance(-curPos->getPrice()); 
+        }
+    }
+    else{
+        int rent = curPos->calculateRent(rolled);
+        p->changeBalance(-rent);
+        curPos->getOwner()->changeBalance(rent);
+    }
 }
 int Game::rollDice(){
     srand(time(0));
     int result = (rand() % 6 + 1) + (rand() % 6 + 1);
-    
     return result;
 }
 
@@ -40,4 +57,5 @@ bool Game::gameEnded() const{
             return true;
         }
     }   
+    return false;
 }

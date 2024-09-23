@@ -39,7 +39,9 @@ public:
     string getName() const{ return name; }
     int getPrice() const{ return price; }
     
-    virtual void handleLanding(Player& player) = 0;
+    virtual void handleOwned(){ return; }
+    virtual int calculateRent(int rolled=0) = 0;
+
     friend ostream& operator<<(ostream& os, Property& s);
 };
 
@@ -47,8 +49,7 @@ class Railroad : public Property {
     int baseRent = 50;
 public:
     Railroad(const string& n) : Property(n,200){};
-    void handleLanding(Player& player) override;
-    int calculateRent() const;
+    int calculateRent(int rolled);
 };
 
 class Street : public Property {
@@ -61,21 +62,20 @@ public:
     Street(const string& n,int p,int r,int h,int hr,int hotr) : Property(n,p),rent(r),houseCost(h),houseRent(hr),hotelRent(hotr){};
     void buildHouse();
     void buildHotel();
-    int calculateRent() const;
-    void handleLanding(Player& player) override;
+    int calculateRent(int rolled);
+    void handleOwned() override;
 };
 
 class Utility : public Property {
 public:
     Utility(const string& n) : Property(n,150){};
-    void handleLanding(Player& player) override;
-    int calculateRent(int diceRoll) const;
+    int calculateRent(int rolled){ return rolled*10; };
 };
 
 class Surprise : public Property {
 public:
     Surprise(const string& n) : Property(n,0){};
-    void handleLanding(Player& player) override;
+    int calculateRent(int rolled){ return rolled; };
 };
 
 #endif
