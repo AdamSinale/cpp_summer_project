@@ -12,9 +12,13 @@ int main() {
         cin >> playerAmount;
     }
     Game game(playerAmount);
-    vector<shared_ptr<Player>> players = game.getPlayers();
+    vector<shared_ptr<Player>>& players = game.getPlayers();
     game.printBoard();
 
+    char ans;
+    cout << "***** Wish to add a Space first? (y/n) *****" << endl;
+    cin >> ans;
+    if(ans=='y' || ans=='Y'){ game.addSpace(); }
     int r1,r2,times=0;
     while(!game.gameEnded()){
         cout << "--------------------------------"  << endl;

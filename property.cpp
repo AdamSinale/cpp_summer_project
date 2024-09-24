@@ -24,6 +24,7 @@ bool Railroad::whenLanded(shared_ptr<Player>& p){
         int rent = calculateRent();
         p->changeBalance(-rent);
         getOwner()->changeBalance(rent);
+        if(p->getBalance() < 0){ p->transferAll(getOwner()); }
     }
     return false;
 }
@@ -69,6 +70,7 @@ bool Street::whenLanded(shared_ptr<Player>& p){
         int rent = calculateRent();
         p->changeBalance(-rent);
         getOwner()->changeBalance(rent);
+        if(p->getBalance() < 0){ p->transferAll(getOwner()); }
     }
     return false;
 }
@@ -98,6 +100,7 @@ bool Utility::whenLanded(shared_ptr<Player>& p){
         int rent = calculateRent(p->getRolled());
         p->changeBalance(-rent);
         getOwner()->changeBalance(rent);
+        if(p->getBalance() < 0){ p->transferAll(getOwner()); }
     }
     return false;
 }

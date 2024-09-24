@@ -26,6 +26,14 @@ public:
     bool isInJail(){ return jailTurns>0; }
     void jailTurn(){ jailTurns--; }
     void useOutOfJailCard(){ outOfJailCards--; }
+
+    void transferAll(shared_ptr<Player> o){
+        if(o != nullptr){ o->changeBalance(getBalance()); }
+        for(auto& p : getProperties()){
+            if(o != nullptr){ o->addProperty(p); }
+            p->setOwner(o);
+        }
+    }
     void move(int steps, int boardSize){ position = (position+steps)%boardSize; }
     void changeBalance(int amount){ balance += amount; };
     void addProperty(shared_ptr<Property> p){ ownedProperties.push_back(p); }

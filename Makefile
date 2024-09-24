@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -g
 
 # Sources
-SOURCES = main.cpp player.cpp property.cpp board.cpp game.cpp
+SOURCES = main.cpp player.hpp property.cpp board.cpp game.cpp
 
 # Objects (same as source files but with .o extension)
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -26,4 +26,4 @@ $(TARGET): $(OBJECTS)
 
 # Clean up object files and the executable
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -f *.o

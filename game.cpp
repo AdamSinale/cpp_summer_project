@@ -14,51 +14,53 @@ Game::Game(int pa){
     cout << "The starting player is " << players[turn]->getName() << "\n" << endl;
 }
 
-void Game::jailAction(shared_ptr<Player>& p, int r1, int r2){
-    cout << "Still in jail, let's roll the dice" << endl;
-    if(r1==r2){ 
-        cout << "Released from jail!" << endl;
-        p->outOfJail();
-        return;
-    }
-    else if(p->getOutOfJailCards() > 0){
-        char ans;
-        cout << "Want to use out of jail card? (y/n)" << endl;
-        cin >> ans;
-        if(ans=='y' || ans=='Y'){ 
-            p->useOutOfJailCard();
-            p->outOfJail(); 
-            return; 
-        }
-    }
-    else if(p->getBalance() >= 50){ 
-        char ans;
-        cout << "Want to pay out? (y/n)" << endl;
-        cin >> ans;
-        if(ans=='y' || ans=='Y'){ 
-            p->changeBalance(-50);
-            p->outOfJail(); 
-            return; 
-        }
-    }
-    p->jailTurn(); 
-    if(!p->isInJail()){ p->changeBalance(-50); }
-    return; 
-}
-void Game::movePlayer(shared_ptr<Player>& p, int r1, int r2){
+bool Game::jailAction(shared_ptr<Player>& p, int r1, int r2){
     if(p->isInJail()){ 
-        jailAction(p,r1,r2);
-        return;
-    }
+        cout << "Still in jail, let's roll the dice" << endl;
+        if(r1==r2){ 
+            cout << "Released from jail!" << endl;
+            p->outOfJail();
+            return true;
+        }
+        else if(p->getOutOfJailCards() > 0){
+            char ans;
+            cout << "Want to use out of jail card? (y/n)" << endl;
+            cin >> ans;
+            if(ans=='y' || ans=='Y'){ 
+                p->useOutOfJailCard();
+                p->outOfJail(); 
+                return true; 
+            }
+        }
+        else if(p->getBalance() >= 50){ 
+            char ans;
+            cout << "Want to pay out? (y/n)" << endl;
+            cin >> ans;
+            if(ans=='y' || ans=='Y'){ 
+                p->changeBalance(-50);
+                p->outOfJail(); 
+                return true; 
+            }
+        }
+        p->jailTurn(); 
+        if(!p->isInJail()){ p->changeBalance(-50); }
+        return true; 
+    } return false;
+}
+
+void addSpace(){
+    
+}
+
+void Game::movePlayer(shared_ptr<Player>& p, int r1, int r2){
+    if(jailAction(p,r1,r2)){ return; }
     p->setRolled(r1+r2);
-    if(p->getPosition()+r1+r2 >= board->boardSize()){ 
-        p->changeBalance(200);
-        cout << "Passed start point, +200" << endl;
-    }
+    passStartAction(p,r1,r2);
     p->move(r1+r2,board->boardSize());
     cout << "You're now at " << p->getPosition() << endl;
     shared_ptr<Property> curPos = board->getProperty(p->getPosition());
     if(curPos->whenLanded(p)){ p->addProperty(curPos); }
+    if(p->isBankrupt()){ players.erase(std::remove(players.begin(),players.end(),p),players.end()); }
 }
 int Game::rollDice(){
     static int previous = 0; 
@@ -73,6 +75,12 @@ int Game::rollDice(){
     return current;
 }
 
+void Game::passStartAction(shared_ptr<Player>& p, int r1, int r2){
+    if(p->getPosition()+r1+r2 >= board->boardSize()){     
+        p->changeBalance(200);
+        cout << "Passed start point, +200" << endl;
+    }
+}
 bool Game::gameEnded() const{
     if(players.size() == 1){
         cout << players[0]->getName() << " WON!!" << endl;

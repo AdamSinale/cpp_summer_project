@@ -12,10 +12,12 @@ class Game {
 public:
     Game(int pa);
     void printBoard(){ board->printBoard(); }
+    void addSpace();
     vector<shared_ptr<Player>>& getPlayers(){ return players; }
     void nextTurn(){ turn = (turn+1) % players.size(); };
     void movePlayer(shared_ptr<Player>& p, int r1, int r2);
-    void jailAction(shared_ptr<Player>& p, int r1, int r2);
+    bool jailAction(shared_ptr<Player>& p, int r1, int r2);
+    void passStartAction(shared_ptr<Player>& p, int r1, int r2);
     int getTurn(){ return turn;};
     bool gameEnded() const;
     int rollDice();
