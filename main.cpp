@@ -15,15 +15,25 @@ int main() {
     vector<shared_ptr<Player>> players = game.getPlayers();
     game.printBoard();
 
-    int rolled;
+    int r1,r2,times=0;
     while(!game.gameEnded()){
-        cout << "Your turn " << players[game.getTurn()]->getName() << endl;
-        rolled = game.rollDice();
-        cout << "You rolled " << rolled << endl;
-        game.movePlayer(players[game.getTurn()],rolled);
+        cout << "--------------------------------"  << endl;
+        cout << "Your turn " << *players[game.getTurn()] << endl;
+        r1 = game.rollDice();
+        r2 = game.rollDice();
+        cout << "You rolled " << r1<<","<<r2 << endl;
+        times++;
+        if(times==3){ 
+            cout << "3 doubles in a row! jail" << endl;
+            players[game.getTurn()]->goToJail(); 
+            times=0; 
+            game.nextTurn();
+            continue; 
+        }
+        game.movePlayer(players[game.getTurn()],r1,r2);
 
-        game.nextTurn();
+        if(r1!=r2){ game.nextTurn(); times=0; }
     }
 }
 
-// 6 7 1 2 2 1 3 1 2 3 3 1 4 5 1 5 3 1 6 1 5 6 1 k
+// 8 a b c d e f g h

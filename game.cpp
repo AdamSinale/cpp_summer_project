@@ -13,37 +13,64 @@ Game::Game(int pa){
     shuffle(players.begin(), players.end(), std::default_random_engine(seed));
     cout << "The starting player is " << players[turn]->getName() << "\n" << endl;
 }
-void Game::movePlayer(shared_ptr<Player>& p, int rolled){
-    if(p->getPosition()+rolled >= board->boardSize()){ 
+
+void Game::jailAction(shared_ptr<Player>& p, int r1, int r2){
+    cout << "Still in jail, let's roll the dice" << endl;
+    if(r1==r2){ 
+        cout << "Released from jail!" << endl;
+        p->outOfJail();
+        return;
+    }
+    else if(p->getOutOfJailCards() > 0){
+        char ans;
+        cout << "Want to use out of jail card? (y/n)" << endl;
+        cin >> ans;
+        if(ans=='y' || ans=='Y'){ 
+            p->useOutOfJailCard();
+            p->outOfJail(); 
+            return; 
+        }
+    }
+    else if(p->getBalance() >= 50){ 
+        char ans;
+        cout << "Want to pay out? (y/n)" << endl;
+        cin >> ans;
+        if(ans=='y' || ans=='Y'){ 
+            p->changeBalance(-50);
+            p->outOfJail(); 
+            return; 
+        }
+    }
+    p->jailTurn(); 
+    if(!p->isInJail()){ p->changeBalance(-50); }
+    return; 
+}
+void Game::movePlayer(shared_ptr<Player>& p, int r1, int r2){
+    if(p->isInJail()){ 
+        jailAction(p,r1,r2);
+        return;
+    }
+    p->setRolled(r1+r2);
+    if(p->getPosition()+r1+r2 >= board->boardSize()){ 
         p->changeBalance(200);
         cout << "Passed start point, +200" << endl;
     }
-    p->move(rolled,board->boardSize());
+    p->move(r1+r2,board->boardSize());
     cout << "You're now at " << p->getPosition() << endl;
     shared_ptr<Property> curPos = board->getProperty(p->getPosition());
-
-    if(curPos->getOwner() == p){ curPos->handleOwned(); }
-    else if(curPos->getOwner() == nullptr){
-        if(p->getBalance() < curPos->getPrice()){ cout<<"Can't buy"<<endl; return;}
-        char ans;
-        cout << "Wanna buy? (y/n)" << endl;
-        cin >> ans;
-        if(ans=='y' || ans=='Y'){ 
-            curPos->setOwner(p); 
-            p->addProperty(curPos);
-            p->changeBalance(-curPos->getPrice()); 
-        }
-    }
-    else{
-        int rent = curPos->calculateRent(rolled);
-        p->changeBalance(-rent);
-        curPos->getOwner()->changeBalance(rent);
-    }
+    if(curPos->whenLanded(p)){ p->addProperty(curPos); }
 }
 int Game::rollDice(){
-    srand(time(0));
-    int result = (rand() % 6 + 1) + (rand() % 6 + 1);
-    return result;
+    static int previous = 0; 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(1, 6);
+    int current;
+    do {
+        current = dist(gen);
+    } while (current == previous);
+    previous = current; 
+    return current;
 }
 
 bool Game::gameEnded() const{

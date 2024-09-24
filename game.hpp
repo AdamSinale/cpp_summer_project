@@ -14,7 +14,8 @@ public:
     void printBoard(){ board->printBoard(); }
     vector<shared_ptr<Player>>& getPlayers(){ return players; }
     void nextTurn(){ turn = (turn+1) % players.size(); };
-    void movePlayer(shared_ptr<Player>& p, int rolled);
+    void movePlayer(shared_ptr<Player>& p, int r1, int r2);
+    void jailAction(shared_ptr<Player>& p, int r1, int r2);
     int getTurn(){ return turn;};
     bool gameEnded() const;
     int rollDice();
