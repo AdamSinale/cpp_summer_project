@@ -8,7 +8,7 @@ class Board {
     vector<shared_ptr<Property>> spaces;
 public:
     Board();
-    void addProperty(shared_ptr<Property> property);
+    void addSpace(shared_ptr<Property> p){ spaces.push_back(p); }
     void printBoard();
     int boardSize(){ return spaces.size(); }
     shared_ptr<Property>& getProperty(int i){ return spaces[i]; }

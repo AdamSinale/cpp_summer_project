@@ -26,4 +26,4 @@ $(TARGET): $(OBJECTS)
 
 # Clean up object files and the executable
 clean:
-	rm -f *.o
+	rm -f *.o monopoly
