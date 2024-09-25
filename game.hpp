@@ -16,6 +16,7 @@ public:
     vector<shared_ptr<Player>>& getPlayers(){ return players; }
     void nextTurn(){ turn = (turn+1) % players.size(); };
     void movePlayer(shared_ptr<Player>& p, int r1, int r2);
+    void sendToJail(shared_ptr<Player>& p);
     bool jailAction(shared_ptr<Player>& p, int r1, int r2);
     void passStartAction(shared_ptr<Player>& p, int r1, int r2);
     int getTurn(){ return turn;};

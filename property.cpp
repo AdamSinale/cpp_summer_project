@@ -110,13 +110,21 @@ bool Start::whenLanded(shared_ptr<Player>& p){
     p->changeBalance(200); 
     return false; 
 }
+bool Chest::whenLanded(shared_ptr<Player>& p){
+    cout << "You found a treasure! (random 100-400)" << endl;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(10,40);  // in jumps of 10
+    p->changeBalance(dist(gen)*10); 
+    return false; 
+}
 bool Tax::whenLanded(shared_ptr<Player>& p){
     cout << "You landed on Tax! -100" << endl;
     p->changeBalance(-100); 
     return false; 
 }
 bool Parking::whenLanded(shared_ptr<Player>& p){
-    cout << "You are parking! Turn ended" << endl;
+    cout << *p << ", You parked. Turn ended" << endl;
     return false;
 }
 bool GoToJail::whenLanded(shared_ptr<Player>& p){
@@ -125,6 +133,45 @@ bool GoToJail::whenLanded(shared_ptr<Player>& p){
     return false;
 }
 bool Jail::whenLanded(shared_ptr<Player>& p){
-    cout << "JAIL" << endl;
+    cout << *p << ", you're going to JAIL!" << endl;
+    return false;
+}
+
+bool Surprise::whenLanded(shared_ptr<Player>& p){
+    vector<unique_ptr<Property>> surprises;
+    
+    surprises.push_back(make_unique<Start>("surprise start"));
+    surprises.push_back(make_unique<Get50>("50 dollars"));
+    surprises.push_back(make_unique<Back3Steps>("3 steps back"));
+    surprises.push_back(make_unique<Repair>("property repairs"));
+    surprises.push_back(make_unique<Tax>("surprise tax"));
+    surprises.push_back(make_unique<Jail>("surprise jail"));
+    surprises.push_back(make_unique<OutOfJail>("out of jail"));
+    
+    int randomSurprise = rand() % surprises.size();
+    surprises[randomSurprise]->whenLanded(p);
+    return false;
+}
+bool Get50::whenLanded(shared_ptr<Player>& p){
+    cout << "Bank pays you dividend of 50$" << endl;
+    p->changeBalance(50);
+    return false;
+}
+bool Back3Steps::whenLanded(shared_ptr<Player>& p){
+    cout << "Go back 3 steps" << endl;
+    p->setPosition(p->getPosition()-3);
+    return false;
+}
+bool Repair::whenLanded(shared_ptr<Player>& p){
+    cout << "Make property repairs - 25$ per house, 100$ per hotel" << endl;
+    for(auto& s : p->getProperties()){
+        p->changeBalance(s->getNumHouses()*25);
+        if(s->getNumHouses()==5){ p->changeBalance(100-25); }
+    }
+    return false;
+}
+bool OutOfJail::whenLanded(shared_ptr<Player>& p){
+    cout << "Out of jail free - kept until needed" << endl;
+    p->addOutOfJailCard();
     return false;
 }

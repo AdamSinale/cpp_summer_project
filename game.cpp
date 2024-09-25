@@ -14,6 +14,12 @@ Game::Game(int pa){
     cout << "The starting player is " << players[turn]->getName() << "\n" << endl;
 }
 
+void Game::sendToJail(shared_ptr<Player>& p){
+    p->goToJail();
+    int jailPos = board->jailPosition();
+    p->setPosition(jailPos);
+}
+
 bool Game::jailAction(shared_ptr<Player>& p, int r1, int r2){
     if(p->isInJail()){ 
         cout << "Still in jail, let's roll the dice" << endl;
@@ -95,16 +101,10 @@ void Game::movePlayer(shared_ptr<Player>& p, int r1, int r2){
     if(p->isBankrupt()){ players.erase(std::remove(players.begin(),players.end(),p),players.end()); }
 }
 int Game::rollDice(){
-    static int previous = 0; 
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(1, 6);
-    int current;
-    do {
-        current = dist(gen);
-    } while (current == previous);
-    previous = current; 
-    return current;
+    return dist(gen);
 }
 
 void Game::passStartAction(shared_ptr<Player>& p, int r1, int r2){

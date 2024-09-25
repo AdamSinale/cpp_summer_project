@@ -4,7 +4,7 @@
 Board::Board() {
     shared_ptr<Start> start = make_shared<Start>("GO(+200 as you pass)");
     shared_ptr<Street> brown1 = make_shared<Street>("Mediter-Ranean Avenue",60,30,60,80,160);
-    shared_ptr<Surprise> chest1 = make_shared<Surprise>("Community Chest");
+    shared_ptr<Chest> chest1 = make_shared<Chest>("Community Chest");
     shared_ptr<Street> brown2 = make_shared<Street>("Baltic Avenue",60,30,60,80,160);
     shared_ptr<Tax> tax1 = make_shared<Tax>("Income Tax");
     shared_ptr<Railroad> rail1 = make_shared<Railroad>("Reading Railroad");
@@ -19,7 +19,7 @@ Board::Board() {
     shared_ptr<Street> pink3 = make_shared<Street>("Virginia Avenue",160,80,160,130,260);
     shared_ptr<Railroad> rail2 = make_shared<Railroad>("Pennsylvania Railroad");
     shared_ptr<Street> orange1 = make_shared<Street>("St. James Place",180,95,180,145,190);
-    shared_ptr<Surprise> chest2 = make_shared<Surprise>("Community Chest");
+    shared_ptr<Chest> chest2 = make_shared<Chest>("Community Chest");
     shared_ptr<Street> orange2 = make_shared<Street>("Tenesse Avenue",180,95,180,145,190);
     shared_ptr<Street> orange3 = make_shared<Street>("New York Avenue",200,100,200,150,300);
     shared_ptr<Parking> parking = make_shared<Parking>("Free Parking");
@@ -35,7 +35,7 @@ Board::Board() {
     shared_ptr<GoToJail> goToJail = make_shared<GoToJail>("Go to jail");
     shared_ptr<Street> green1 = make_shared<Street>("Pacific Avenue",300,150,300,200,400);
     shared_ptr<Street> green2 = make_shared<Street>("North carolina Avenue",300,150,300,200,400);
-    shared_ptr<Surprise> chest3 = make_shared<Surprise>("Community Chest");
+    shared_ptr<Chest> chest3 = make_shared<Chest>("Community Chest");
     shared_ptr<Street> green3 = make_shared<Street>("Pennsylvania Avenue",320,160,320,210,420);
     shared_ptr<Railroad> rail4 = make_shared<Railroad>("Short Line");
     shared_ptr<Surprise> chance3 = make_shared<Surprise>("Chance");
@@ -59,3 +59,11 @@ void Board::printBoard(){
     cout << "----------------------------------------------------------------" << endl;
 }
 
+int Board::jailPosition(){
+    for(size_t i=0; i<spaces.size(); i++){
+        if(dynamic_cast<Jail*>(spaces[i].get())){
+            return i;
+        }
+    }
+    return 0;
+}

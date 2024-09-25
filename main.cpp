@@ -29,7 +29,7 @@ int main() {
         times++;
         if(times==3){ 
             cout << "3 doubles in a row! jail" << endl;
-            players[game.getTurn()]->goToJail(); 
+            game.sendToJail(players[game.getTurn()]);
             times=0; 
             game.nextTurn();
             continue; 

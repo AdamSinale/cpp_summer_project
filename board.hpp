@@ -10,6 +10,7 @@ public:
     Board();
     void addSpace(shared_ptr<Property> p){ spaces.push_back(p); }
     void printBoard();
+    int jailPosition();
     int boardSize(){ return spaces.size(); }
     shared_ptr<Property>& getProperty(int i){ return spaces[i]; }
 };
