@@ -29,6 +29,21 @@ public:
     void jailTurn(){ jailTurns--; }
     void useOutOfJailCard(){ outOfJailCards--; }
 
+    bool sameColorLevel(Street s){
+        for(auto& p : getProperties()){
+            if(p->getColor()!=""){                // is a street
+                if(s.getColor()==p->getColor()){  // are same color
+                    if(p->getNumHouses()<s.getNumHouses()){ // not on the same level
+                        cout << "Upgrade " << p->getName() << "first" << endl;
+                        return false;
+                    } if(p->getOwner() != s.getOwner()){ // under else's ownership
+                        cout << "You dont have the full color" << endl;
+                        return false;
+                    }
+                }
+            }
+        } return true;
+    }
     void transferAll(shared_ptr<Player> o){
         if(o != nullptr){ o->changeBalance(getBalance()); }
         for(auto& p : getProperties()){

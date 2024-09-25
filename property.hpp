@@ -39,8 +39,10 @@ public:
     virtual bool whenLanded(shared_ptr<Player>& p) = 0;
     string getName() const{ return name; }
     friend ostream& operator<<(ostream& os, Property& s);
-    int getPrice() const{ return 0; }
+    virtual int getPrice() const{ return 0; }
     int getNumHouses(){ return 0; }
+    virtual string getColor() const{ return ""; }
+    shared_ptr<Player> getOwner() const{ return owner.lock(); }
     void setOwner(const shared_ptr<Player>& newOwner){ owner = newOwner; }
 };
 
@@ -54,9 +56,9 @@ public:
     bool whenLanded(shared_ptr<Player>& p) override;
     int calculateRent();
     int getPrice() const{ return price; }
-    shared_ptr<Player> getOwner() const{ return owner.lock(); }
 };
 class Street : public Property {
+    string color;
     int price;
     int rent;
     int houseCost;
@@ -65,18 +67,18 @@ class Street : public Property {
     int numHouses = 0;
 public:
     Street() : Property(){
-        cout << "price, rent, house cost, house rent, hotel rent" << endl;
-        cin >> price >> rent >> houseCost >> houseRent >> hotelRent;
+        cout << "color, price, rent, house cost, house rent, hotel rent" << endl;
+        cin >> color >> price >> rent >> houseCost >> houseRent >> hotelRent;
     }
-    Street(const string& n,int p,int r,int h,int hr,int hotr) : Property(n),price(p),rent(r),houseCost(h),houseRent(hr),hotelRent(hotr){};
+    Street(const string& n,const string& c,int p,int r,int h,int hr,int hotr) : Property(n),color(c),price(p),rent(r),houseCost(h),houseRent(hr),hotelRent(hotr){};
     ~Street(){}
     void buildHouse();
     void buildHotel();
     bool whenLanded(shared_ptr<Player>& p) override;
     int calculateRent();
+    string getColor() const{ return color; }
     int getNumHouses(){ return numHouses; }
     int getPrice() const{ return price; }
-    shared_ptr<Player> getOwner() const{ return owner.lock(); }
 };
 class Utility : public Property {
     int price = 150;
@@ -87,7 +89,6 @@ public:
     bool whenLanded(shared_ptr<Player>& p) override;
     int calculateRent(int rolled){ return rolled*10; };
     int getPrice() const{ return price; }
-    shared_ptr<Player> getOwner() const{ return owner.lock(); }
 };
 
 class Chest : public Property {

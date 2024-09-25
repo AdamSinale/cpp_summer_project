@@ -70,21 +70,21 @@ void Game::addSpace(){  // another jail is useless
         case '0':
             return;
         case '1':
-            board->addSpace(make_shared<Street>()); 
+            board->addSpace(make_shared<Street>()); break;
         case '2':
-            board->addSpace(make_shared<Railroad>()); 
+            board->addSpace(make_shared<Railroad>()); break;
         case '3':
-            board->addSpace(make_shared<Utility>()); 
+            board->addSpace(make_shared<Utility>()); break;
         case '4':
-            board->addSpace(make_shared<Start>()); 
+            board->addSpace(make_shared<Start>()); break;
         case '5':
-            board->addSpace(make_shared<Surprise>()); 
+            board->addSpace(make_shared<Surprise>()); break;
         case '6':
-            board->addSpace(make_shared<Parking>()); 
+            board->addSpace(make_shared<Parking>()); break;
         case '7':
-            board->addSpace(make_shared<Tax>()); 
+            board->addSpace(make_shared<Tax>()); break;
         case '8':
-            board->addSpace(make_shared<GoToJail>()); 
+            board->addSpace(make_shared<GoToJail>()); break;
         default:
             cout << "invalid"; return;
     }
@@ -95,8 +95,8 @@ void Game::movePlayer(shared_ptr<Player>& p, int r1, int r2){
     p->setRolled(r1+r2);
     passStartAction(p,r1,r2);
     p->move(r1+r2,board->boardSize());
-    cout << "You're now at " << p->getPosition() << endl;
     shared_ptr<Property> curPos = board->getProperty(p->getPosition());
+    cout << "You're at " << *curPos <<"("<<p->getPosition()<<")" << endl;
     if(curPos->whenLanded(p)){ p->addProperty(curPos); }
     if(p->isBankrupt()){ players.erase(std::remove(players.begin(),players.end(),p),players.end()); }
 }

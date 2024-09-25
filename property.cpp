@@ -11,11 +11,12 @@ bool Railroad::whenLanded(shared_ptr<Player>& p){
     else if(getOwner() == nullptr){
         if(p->getBalance() < getPrice()){ cout<<"Can't buy"<<endl; return false;}
         char ans;
-        cout << "Wanna buy? (y/n)" << endl;
+        cout << "Wanna buy? You have " << p->getBalance() << " (y/n)" << endl;
         cin >> ans;
         if(ans=='y' || ans=='Y'){ 
             setOwner(p); 
             p->changeBalance(-getPrice()); 
+            cout << "You now have " << p->getBalance() << endl;
             return true;
         }
     }
@@ -43,25 +44,28 @@ bool Street::whenLanded(shared_ptr<Player>& p){
         if(numHouses==5){ cout<<"Got to your hotel"<<endl; return false; }
         else{
             if((numHouses<4 && p->getBalance()<houseCost) || p->getBalance()<houseCost*4+100){ 
-                cout<<"Can't buy"<<endl; return false;
+                cout<<"Can't afford to upgrade"<<endl; return false;
             }
+            if(!p->sameColorLevel(*this)){ return false; }
             char ans;
-            cout << "Wanna upgrade? (y/n)" << endl;
+            cout << "Wanna upgrade? You have " << p->getBalance() << " (y/n)" << endl;
             cin >> ans;
             if(ans=='y' || ans=='Y'){ 
                 numHouses++; p->changeBalance(-price);
+                cout << "You now have " << p->getBalance() << endl;
                 return true;
             }
         } 
     }
     else if(getOwner() == nullptr){
-        if(p->getBalance() < getPrice()){ cout<<"Can't buy"<<endl; return false;}
+        if(p->getBalance() < getPrice()){ cout<<"Can't afford to buy"<<endl; return false;}
         char ans;
-        cout << "Wanna buy? (y/n)" << endl;
+        cout << "Wanna buy? You have " << p->getBalance() << " (y/n)" << endl;
         cin >> ans;
         if(ans=='y' || ans=='Y'){ 
             setOwner(p); 
             p->changeBalance(-getPrice()); 
+            cout << "You now have " << p->getBalance() << endl;
             return true;
         }
     }
@@ -115,16 +119,18 @@ bool Chest::whenLanded(shared_ptr<Player>& p){
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(10,40);  // in jumps of 10
-    p->changeBalance(dist(gen)*10); 
+    int gift = dist(gen)*10;
+    p->changeBalance(gift); 
+    cout << "You got " << gift << "! You balance is " << p->getBalance() << endl;
     return false; 
 }
 bool Tax::whenLanded(shared_ptr<Player>& p){
-    cout << "You landed on Tax! -100" << endl;
+    cout << "You landed on Tax! -100, You are left with " << p->getBalance() << endl;
     p->changeBalance(-100); 
     return false; 
 }
 bool Parking::whenLanded(shared_ptr<Player>& p){
-    cout << *p << ", You parked. Turn ended" << endl;
+    cout << *p << ", rest here. Turn ended" << endl;
     return false;
 }
 bool GoToJail::whenLanded(shared_ptr<Player>& p){
@@ -153,7 +159,7 @@ bool Surprise::whenLanded(shared_ptr<Player>& p){
     return false;
 }
 bool Get50::whenLanded(shared_ptr<Player>& p){
-    cout << "Bank pays you dividend of 50$" << endl;
+    cout << "Bank pays you dividend of 50$. New balance - " << p->getBalance() << endl;
     p->changeBalance(50);
     return false;
 }
