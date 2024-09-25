@@ -56,7 +56,7 @@ public:
     void addProperty(shared_ptr<Property> p){ ownedProperties.push_back(p); }
     bool isBankrupt() const{ return balance <= 0; };
 
-    friend ostream& operator<<(ostream& os, Player& p){ os<<p.getName(); return os; }
+    friend ostream& operator<<(ostream& os, Player& p){ os<<"\033[31m"<<p.getName()<<"\033[0m"; return os; }
 };
 
 #endif

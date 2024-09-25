@@ -9,7 +9,7 @@ class Board {
 public:
     Board();
     void addSpace(shared_ptr<Property> p){ spaces.push_back(p); }
-    void printBoard();
+    void printBoard(vector<shared_ptr<Player>>& players);
     int jailPosition();
     int boardSize(){ return spaces.size(); }
     shared_ptr<Property>& getProperty(int i){ return spaces[i]; }

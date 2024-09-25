@@ -47,16 +47,14 @@ Board::Board() {
               parking,red1,chance2,red2,red3,rail3,yellow1,yellow2,comp2,yellow3,goToJail,green1,green2,chest3,green3,rail4,chance3,blue1,tax2,blue2};
 }
 
-void Board::printBoard(){
-    cout << "----------------------------------------------------------------" << endl;
-    for(size_t i=20; i<=30; i++){ cout << "|" << *spaces[i]; } cout << "|" << endl;
-    size_t j = 0;
-    for(size_t i=19; i>=11; i--){ 
-        cout << *spaces[i] << "                                        " << *spaces[i+12+j] << endl; 
-        j += 2; 
+void Board::printBoard(vector<shared_ptr<Player>>& players){
+    cout << "----------------------------------------------------------------";
+    for(int i=0; i<spaces.size(); i++){ 
+        if(i%5==0){ cout << "\n| "; }
+        for(auto& p : players){ if(i==p->getPosition()){ cout << *p << " "; }}
+        cout << *spaces[i] << " | ";
     }
-    for(size_t i=0; i<=10; i++){ cout << "|" << *spaces[i]; } cout << "|" << endl;
-    cout << "----------------------------------------------------------------" << endl;
+    cout << "\n----------------------------------------------------------------" << endl;
 }
 
 int Board::jailPosition(){

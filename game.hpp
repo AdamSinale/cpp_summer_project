@@ -11,7 +11,7 @@ class Game {
     int turn = 0;
 public:
     Game(int pa);
-    void printBoard(){ board->printBoard(); }
+    void printBoard(){ board->printBoard(players); }
     void addSpace();
     vector<shared_ptr<Player>>& getPlayers(){ return players; }
     void nextTurn(){ turn = (turn+1) % players.size(); };

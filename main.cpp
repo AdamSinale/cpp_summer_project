@@ -35,9 +35,9 @@ int main() {
         r2 = game.rollDice();
         cout << "You rolled " << r1<<","<<r2 << endl;
         game.movePlayer(players[game.getTurn()],r1,r2);
-
+        game.printBoard();
         if(r1!=r2){ game.nextTurn(); times=0; }
     }
 }
 
-// 8 a b c d e f g h y 5 boo! 
+// 8 a b c d e f g h y 5 boo! 1 moshe red 100 50 100 50 200
