@@ -12,7 +12,7 @@ Board::Board() {
     shared_ptr<Surprise> chance1 = make_shared<Surprise>("Chance");
     shared_ptr<Street> cyan2 = make_shared<Street>("Vermont Avenue","cyan",100,50,100,100,200);
     shared_ptr<Street> cyan3 = make_shared<Street>("Connecticut Avenue","cyan",120,60,120,110,220);
-    shared_ptr<Parking> jail = make_shared<Parking>("Jail");
+    shared_ptr<Jail> jail = make_shared<Jail>("Jail");
     shared_ptr<Street> pink1 = make_shared<Street>("St. Charles Place","pink",140,70,140,120,240);
     shared_ptr<Utility> comp1 = make_shared<Utility>("Electric Company");
     shared_ptr<Street> pink2 = make_shared<Street>("States Avenue","pink",140,70,140,120,240);

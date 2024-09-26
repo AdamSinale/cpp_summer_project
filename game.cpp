@@ -28,29 +28,32 @@ bool Game::jailAction(shared_ptr<Player>& p, int r1, int r2){
             p->outOfJail();
             return true;
         }
-        else if(p->getOutOfJailCards() > 0){
-            char ans;
-            cout << "Want to use out of jail card? (y/n)" << endl;
-            cin >> ans;
-            if(ans=='y' || ans=='Y'){ 
-                p->useOutOfJailCard();
-                p->outOfJail(); 
-                return true; 
+        else {
+            cout << r1<<","<<r2 << " sorry, better luck next time" << endl;
+            if(p->getOutOfJailCards() > 0){
+                char ans;
+                cout << "Want to use out of jail card? (y/n)" << endl;
+                cin >> ans;
+                if(ans=='y' || ans=='Y'){ 
+                    p->useOutOfJailCard();
+                    p->outOfJail(); 
+                    return true; 
+                }
             }
-        }
-        else if(p->getBalance() >= 50){ 
-            char ans;
-            cout << "Want to pay out? (y/n)" << endl;
-            cin >> ans;
-            if(ans=='y' || ans=='Y'){ 
-                p->changeBalance(-50);
-                p->outOfJail(); 
-                return true; 
+            else if(p->getBalance() >= 50){ 
+                char ans;
+                cout << "Want to pay out? (y/n)" << endl;
+                cin >> ans;
+                if(ans=='y' || ans=='Y'){ 
+                    p->changeBalance(-50);
+                    p->outOfJail(); 
+                    return true; 
+                }
             }
+            p->jailTurn(); 
+            if(!p->isInJail()){ p->changeBalance(-50); }
+            return true; 
         }
-        p->jailTurn(); 
-        if(!p->isInJail()){ p->changeBalance(-50); }
-        return true; 
     } return false;
 }
 
@@ -98,6 +101,7 @@ void Game::movePlayer(shared_ptr<Player>& p, int r1, int r2){
     shared_ptr<Property> curPos = board->getProperty(p->getPosition());
     cout << "You're at " << *curPos <<"("<<p->getPosition()<<")" << endl;
     if(curPos->whenLanded(p)){ p->addProperty(curPos); }
+    if(dynamic_cast<GoToJail*>(curPos.get())){ sendToJail(p); }
     if(p->isBankrupt()){ players.erase(std::remove(players.begin(),players.end(),p),players.end()); }
 }
 int Game::rollDice(){
