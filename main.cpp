@@ -1,7 +1,7 @@
 #include "player.hpp"
 #include "game.hpp"
 #include "property.hpp"
-
+#include <SFML/Graphics.hpp>
 
 int main() {
     int playerAmount;
@@ -13,14 +13,26 @@ int main() {
     }
     Game game(playerAmount);
     vector<shared_ptr<Player>>& players = game.getPlayers();
-    game.printBoard();
 
     char ans;
     cout << "***** Wish to add a Space first? (y/n) *****" << endl;
     cin >> ans;
     if(ans=='y' || ans=='Y'){ game.addSpace(); }
+
+    sf::RenderWindow window(sf::VideoMode(1800, 900), "Monopoly Game");  // SFML window
+
     int r1,r2,times=0;
-    while(!game.gameEnded()){
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+        window.clear(sf::Color::White);
+        game.displayBoard(window);
+        window.display();
+
+        if(game.gameEnded()){ break; }
         cout << "--------------------------------"  << endl;
         times++;
         if(times==4){                                              // 4th turn due to 3 doubles 
@@ -35,7 +47,6 @@ int main() {
         r2 = game.rollDice();
         cout << "You rolled " << r1<<","<<r2 << endl;
         game.movePlayer(players[game.getTurn()],r1,r2);
-        game.printBoard();
         if(r1!=r2){ game.nextTurn(); times=0; }
     }
 }

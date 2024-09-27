@@ -1,29 +1,33 @@
+# Path to your SFML directory
+SFML_DIR = ./SFML-2.5.1
+
 # Compiler
 CXX = g++
+CXXFLAGS = -std=c++17 -Wall -I$(SFML_DIR)/include
+LDFLAGS = -L$(SFML_DIR)/lib -lsfml-graphics -lsfml-window -lsfml-system -lGL -lGLU -Wl,-rpath=$(SFML_DIR)/lib
 
-# Compiler flags
-CXXFLAGS = -std=c++17 -Wall -Wextra -g
-
-# Sources
-SOURCES = main.cpp player.hpp property.cpp board.cpp game.cpp
-
-# Objects (same as source files but with .o extension)
-OBJECTS = $(SOURCES:.cpp=.o)
-
-# Executable target name
+# Executable target
 TARGET = monopoly
 
-# Default target (the first target is the one that runs when you just type `make`)
+# Source files (no need to include player.hpp, it's included in cpp files)
+SOURCES = main.cpp game.cpp board.cpp property.cpp
+
+# Object files
+OBJECTS = $(SOURCES:.cpp=.o)
+
+# Build the project
 all: $(TARGET)
 
-# Rule for linking the object files to create the final executable
+# Link object files into the executable
 $(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS)
+	$(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
 
-# Rule for compiling .cpp files into .o files
+# Compile each source file into an object file
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $<
 
-# Clean up object files and the executable
+# Clean up build artifacts
 clean:
-	rm -f *.o monopoly
+	rm -f $(OBJECTS) $(TARGET)
+
+.PHONY: all clean

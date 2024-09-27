@@ -6,6 +6,10 @@ ostream& operator<<(ostream& os, Property& s){
     return os;
 }
 
+string Railroad::getDisplay(){ 
+    if(owner.lock()==nullptr){ return name+"\n"+std::to_string(price); }
+    return name+"\n"+std::to_string(price) +"\n"+owner.lock()->getName()+"'s";
+}
 bool Railroad::whenLanded(shared_ptr<Player>& p){
     if(getOwner() == p){ return false; }
     else if(getOwner() == nullptr){
@@ -39,6 +43,10 @@ int Railroad::calculateRent(){
     return rails*50;
 }
 
+string Street::getDisplay(){ 
+    if(owner.lock()==nullptr){ return name+"\n"+std::to_string(price); }
+    return name+"\n"+std::to_string(price) +"\n"+owner.lock()->getName()+"'s";
+}
 bool Street::whenLanded(shared_ptr<Player>& p){
     if(getOwner() == p){
         if(numHouses==5){ cout<<"Got to your hotel"<<endl; return false; }
@@ -86,6 +94,10 @@ int Street::calculateRent(){
     return price;
 }
 
+string Utility::getDisplay(){ 
+    if(owner.lock()==nullptr){ return name+"\n"+std::to_string(price); }
+    return name+"\n"+std::to_string(price) +"\n"+owner.lock()->getName()+"'s";
+}
 bool Utility::whenLanded(shared_ptr<Player>& p){
     if(getOwner() == p){ return false; }
     else if(getOwner() == nullptr){
@@ -125,8 +137,8 @@ bool Chest::whenLanded(shared_ptr<Player>& p){
     return false; 
 }
 bool Tax::whenLanded(shared_ptr<Player>& p){
-    cout << "You landed on Tax! -100, You are left with " << p->getBalance() << endl;
     p->changeBalance(-100); 
+    cout << "You landed on Tax! -100, You are left with " << p->getBalance() << endl;
     return false; 
 }
 bool Parking::whenLanded(shared_ptr<Player>& p){

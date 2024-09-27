@@ -44,6 +44,7 @@ public:
     virtual string getColor() const{ return ""; }
     shared_ptr<Player> getOwner() const{ return owner.lock(); }
     void setOwner(const shared_ptr<Player>& newOwner){ owner = newOwner; }
+    virtual string getDisplay(){ return name; }
 };
 
 class Railroad : public Property {
@@ -56,6 +57,7 @@ public:
     bool whenLanded(shared_ptr<Player>& p) override;
     int calculateRent();
     int getPrice() const{ return price; }
+    string getDisplay() override;
 };
 class Street : public Property {
     string color;
@@ -79,6 +81,7 @@ public:
     string getColor() const{ return color; }
     int getNumHouses(){ return numHouses; }
     int getPrice() const{ return price; }
+    string getDisplay() override;
 };
 class Utility : public Property {
     int price = 150;
@@ -89,6 +92,7 @@ public:
     bool whenLanded(shared_ptr<Player>& p) override;
     int calculateRent(int rolled){ return rolled*10; };
     int getPrice() const{ return price; }
+    string getDisplay() override;
 };
 
 class Chest : public Property {

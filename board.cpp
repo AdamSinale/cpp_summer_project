@@ -47,14 +47,44 @@ Board::Board() {
               parking,red1,chance2,red2,red3,rail3,yellow1,yellow2,comp2,yellow3,goToJail,green1,green2,chest3,green3,rail4,chance3,blue1,tax2,blue2};
 }
 
-void Board::printBoard(vector<shared_ptr<Player>>& players){
-    cout << "----------------------------------------------------------------";
-    for(int i=0; i<spaces.size(); i++){ 
-        if(i%5==0){ cout << "\n| "; }
-        for(auto& p : players){ if(i==p->getPosition()){ cout << *p << " "; }}
-        cout << *spaces[i] << " | ";
+void Board::displayBoard(sf::RenderWindow& window, const vector<shared_ptr<Player>>& players){
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf")) {
+        // Handle error
+        return;
     }
-    cout << "\n----------------------------------------------------------------" << endl;
+
+    // Iterate over spaces to draw each property
+    for (size_t i = 0; i < spaces.size(); ++i) {
+        // Property shape
+        sf::RectangleShape propertyShape(sf::Vector2f(170, 100));
+        propertyShape.setPosition((i % 10) * 180, (i / 10) * 120);  // Grid layout
+        propertyShape.setFillColor(sf::Color::White);
+        propertyShape.setOutlineColor(sf::Color::Black);
+        propertyShape.setOutlineThickness(2);
+
+        window.draw(propertyShape);
+
+        // Property name
+        sf::Text propertyName(spaces[i]->getDisplay(), font, 20);
+        propertyName.setPosition((i % 10) * 180 + 10, (i / 10) * 120 + 10);
+        propertyName.setFillColor(sf::Color::Black); 
+        window.draw(propertyName);
+    }
+
+    // Draw players
+    for (const auto& player : players) {
+        sf::CircleShape playerToken(15);
+        playerToken.setFillColor(sf::Color::Blue);  // Use different colors for each player if desired
+        int playerPosition = player->getPosition();
+        playerToken.setPosition((playerPosition % 10) * 180 + 60, (playerPosition / 10) * 120 + 60);
+        window.draw(playerToken);
+
+        // Player name
+        sf::Text playerName(player->getName(), font, 15);
+        playerName.setPosition((playerPosition % 10) * 180 + 70, (playerPosition / 10) * 120 + 60);
+        window.draw(playerName);
+    }
 }
 
 int Board::jailPosition(){
