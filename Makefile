@@ -1,33 +1,37 @@
-# Path to your SFML directory
-SFML_DIR = ./SFML-2.5.1
-
 # Compiler
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -I$(SFML_DIR)/include
-LDFLAGS = -L$(SFML_DIR)/lib -lsfml-graphics -lsfml-window -lsfml-system -lGL -lGLU -Wl,-rpath=$(SFML_DIR)/lib
 
-# Executable target
-TARGET = monopoly
+# Compiler flags
+CXXFLAGS = -Wall -std=c++17
 
-# Source files (no need to include player.hpp, it's included in cpp files)
-SOURCES = main.cpp game.cpp board.cpp property.cpp
+# Include directories (SFML system-wide)
+INCLUDES = -I/usr/include
+
+# Linker flags for SFML
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 # Object files
-OBJECTS = $(SOURCES:.cpp=.o)
+OBJ = main.o board.o game.o property.o
 
-# Build the project
-all: $(TARGET)
+# Executable name
+EXEC = monopoly
 
-# Link object files into the executable
-$(TARGET): $(OBJECTS)
-	$(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
+# Rule to compile the project
+all: $(OBJ)
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(EXEC) $(LDFLAGS)
 
-# Compile each source file into an object file
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $<
+# Rules to compile individual files
+main.o: main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp $(INCLUDES)
 
-# Clean up build artifacts
+board.o: board.cpp board.hpp
+	$(CXX) $(CXXFLAGS) -c board.cpp $(INCLUDES)
+
+game.o: game.cpp game.hpp
+	$(CXX) $(CXXFLAGS) -c game.cpp $(INCLUDES)
+
+property.o: property.cpp property.hpp
+	$(CXX) $(CXXFLAGS) -c property.cpp $(INCLUDES)
+
 clean:
-	rm -f $(OBJECTS) $(TARGET)
-
-.PHONY: all clean
+	rm -f *.o $(EXEC)
