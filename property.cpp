@@ -45,7 +45,10 @@ int Railroad::calculateRent(){
 
 string Street::getDisplay(){ 
     if(owner.lock()==nullptr){ return name+"\n"+std::to_string(price); }
-    return name+"\n"+std::to_string(price) +"\n"+owner.lock()->getName()+"'s";
+    string built="";
+    if(numHouses>0){ built="houses-"+std::to_string(numHouses); }
+    if(numHouses==5){ built="hotel"; }
+    return name+"\n"+std::to_string(price) +"\n"+owner.lock()->getName()+"'s. "+built;
 }
 bool Street::whenLanded(shared_ptr<Player>& p){
     if(getOwner() == p){

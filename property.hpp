@@ -32,6 +32,7 @@ class Property {
 protected:
     string name;
     weak_ptr<Player> owner;
+    vector<shared_ptr<Property>> group;
 public:
     Property(){ cout << "enter name"<< endl; cin >> name;}
     Property(const string& n) : name(n){}
@@ -45,6 +46,8 @@ public:
     shared_ptr<Player> getOwner() const{ return owner.lock(); }
     void setOwner(const shared_ptr<Player>& newOwner){ owner = newOwner; }
     virtual string getDisplay(){ return name; }
+    void addGroup( vector<shared_ptr<Property>> g){ for(auto& s : g){group.push_back(s);} }
+     vector<shared_ptr<Property>> getGroup(){ return group; } 
 };
 
 class Railroad : public Property {

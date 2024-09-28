@@ -9,7 +9,7 @@ class Board {
     vector<shared_ptr<Property>> spaces;
 public:
     Board();
-    void addSpace(shared_ptr<Property> p){ spaces.push_back(p); }
+    void addSpace(shared_ptr<Property> p);
     void displayBoard(sf::RenderWindow& window, const vector<shared_ptr<Player>>& players);
     int jailPosition();
     int boardSize(){ return spaces.size(); }

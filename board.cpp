@@ -43,8 +43,33 @@ Board::Board() {
     shared_ptr<Tax> tax2 = make_shared<Tax>("Luxury Tax");
     shared_ptr<Street> blue2 = make_shared<Street>("Boardwalk","blue",400,200,400,250,500);
 
+    brown1->addGroup({brown2}); brown2->addGroup({brown1});
+    cyan1->addGroup({cyan2,cyan3}); cyan2->addGroup({cyan1,cyan3}); cyan3->addGroup({cyan1,cyan2});
+    pink1->addGroup({pink2,pink3}); pink2->addGroup({pink1,pink3}); pink3->addGroup({pink1,pink2});
+    orange1->addGroup({orange2,orange3}); orange2->addGroup({orange1,orange3}); orange3->addGroup({orange1,orange2});
+    red1->addGroup({red2,red3}); red2->addGroup({red1,red3}); red3->addGroup({red1,red2});
+    yellow1->addGroup({yellow2,yellow3}); yellow2->addGroup({yellow1,yellow3}); yellow3->addGroup({yellow1,yellow2});
+    green1->addGroup({green2,green3}); green2->addGroup({green1,green3}); green3->addGroup({green1,green2});
+    blue1->addGroup({blue2}); blue2->addGroup({blue1});
+
+    tax1->addGroup({tax2}); tax2->addGroup({tax1});
+    rail1->addGroup({rail2,rail3,rail4}); rail2->addGroup({rail1,rail3,rail4}); rail3->addGroup({rail2,rail1,rail4}); rail4->addGroup({rail2,rail3,rail1}); 
+
     spaces = {start,brown1,chest1,brown2,tax1,rail1,cyan1,chance1,cyan2,cyan3,jail,pink1,comp1,pink2,pink3,rail2,orange1,chest2,orange2,orange3,
               parking,red1,chance2,red2,red3,rail3,yellow1,yellow2,comp2,yellow3,goToJail,green1,green2,chest3,green3,rail4,chance3,blue1,tax2,blue2};
+}
+
+void Board::addSpace(shared_ptr<Property> p){ 
+    spaces.push_back(p); 
+    if(!dynamic_cast<Street*>(p.get())){ return; }
+    vector<shared_ptr<Property>> group;
+    for(auto& s : spaces){
+        if(s->getColor() == p->getColor()){ 
+            group.push_back(s); 
+            s->addGroup({p}); 
+        }
+    }
+    p->addGroup(group); 
 }
 
 void Board::displayBoard(sf::RenderWindow& window, const vector<shared_ptr<Player>>& players){
@@ -77,12 +102,12 @@ void Board::displayBoard(sf::RenderWindow& window, const vector<shared_ptr<Playe
         sf::CircleShape playerToken(15);
         playerToken.setFillColor(sf::Color::Blue);  // Use different colors for each player if desired
         int playerPosition = player->getPosition();
-        playerToken.setPosition((playerPosition % 10) * 180 + 60, (playerPosition / 10) * 120 + 60);
+        playerToken.setPosition((playerPosition % 10) * 180 + 110, (playerPosition / 10) * 120 + 60);
         window.draw(playerToken);
 
         // Player name
         sf::Text playerName(player->getName(), font, 15);
-        playerName.setPosition((playerPosition % 10) * 180 + 70, (playerPosition / 10) * 120 + 60);
+        playerName.setPosition((playerPosition % 10) * 180 + 120, (playerPosition / 10) * 120 + 60);
         window.draw(playerName);
     }
 }

@@ -30,7 +30,7 @@ public:
     void useOutOfJailCard(){ outOfJailCards--; }
 
     bool sameColorLevel(Street s){
-        for(auto& p : getProperties()){
+        for(auto& p : s.getGroup()){
             if(p->getColor()!=""){                // is a street
                 if(s.getColor()==p->getColor()){  // are same color
                     if(p->getNumHouses()<s.getNumHouses()){ // not on the same level
@@ -42,7 +42,8 @@ public:
                     }
                 }
             }
-        } return true;
+        } 
+        return true;
     }
     void transferAll(shared_ptr<Player> o){
         if(o != nullptr){ o->changeBalance(getBalance()); }
