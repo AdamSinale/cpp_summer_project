@@ -14,7 +14,7 @@ OBJ = board.o game.o property.o main.o  # includes main.o for the game
 TEST_OBJ = Test.o TestCounter.o board.o game.o property.o  # excludes main.o
 
 EXEC = monopoly
-TEST_EXEC = run_tests
+TEST_EXEC = test
 
 # Default target: builds the game
 all: $(OBJ)
