@@ -1,3 +1,5 @@
+// ID: 322453689
+// MAIL: adam.sinale@gmail.com
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
@@ -19,15 +21,15 @@ public:
     int getRolled(){ return rolled; }
     int getOutOfJailCards(){ return outOfJailCards; }
     void setRolled(int r){ rolled = r; }
-    void setPosition(int n){ if(n>=0) position=n; }
-    vector<shared_ptr<Property>> getProperties(){ return ownedProperties; }
+    void setPosition(int n){ if(n>0){position=n;} else{position=0;} }
+    vector<shared_ptr<Property>>& getProperties(){ return ownedProperties; }
 
     void addOutOfJailCard(){ outOfJailCards++; }
     void goToJail(){ jailTurns=3; }
     void outOfJail(){ jailTurns=0; }
     bool isInJail(){ return jailTurns>0; }
     void jailTurn(){ jailTurns--; }
-    void useOutOfJailCard(){ outOfJailCards--; }
+    void useOutOfJailCard(){ outOfJailCards--; outOfJail(); }
 
     bool sameColorLevel(Street s){
         for(auto& p : s.getGroup()){

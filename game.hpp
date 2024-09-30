@@ -1,3 +1,5 @@
+// ID: 322453689
+// MAIL: adam.sinale@gmail.com
 
 #ifndef GAME_HPP
 #define GAME_HPP

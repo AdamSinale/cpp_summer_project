@@ -1,3 +1,5 @@
+// ID: 322453689
+// MAIL: adam.sinale@gmail.com
 
 #ifndef BOARD_HPP
 #define BOARD_HPP

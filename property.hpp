@@ -1,3 +1,5 @@
+// ID: 322453689
+// MAIL: adam.sinale@gmail.com
 
 #ifndef PROPERTY_HPP
 #define PROPERTY_HPP
@@ -47,7 +49,7 @@ public:
     void setOwner(const shared_ptr<Player>& newOwner){ owner = newOwner; }
     virtual string getDisplay(){ return name; }
     void addGroup( vector<shared_ptr<Property>> g){ for(auto& s : g){group.push_back(s);} }
-     vector<shared_ptr<Property>> getGroup(){ return group; } 
+    vector<shared_ptr<Property>> getGroup(){ return group; } 
 };
 
 class Railroad : public Property {
@@ -77,12 +79,11 @@ public:
     }
     Street(const string& n,const string& c,int p,int r,int h,int hr,int hotr) : Property(n),color(c),price(p),rent(r),houseCost(h),houseRent(hr),hotelRent(hotr){};
     ~Street(){}
-    void buildHouse();
-    void buildHotel();
     bool whenLanded(shared_ptr<Player>& p) override;
     int calculateRent();
     string getColor() const{ return color; }
     int getNumHouses(){ return numHouses; }
+    void addHouse(){ numHouses++; }
     int getPrice() const{ return price; }
     string getDisplay() override;
 };

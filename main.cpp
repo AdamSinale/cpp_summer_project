@@ -1,3 +1,5 @@
+// ID: 322453689
+// MAIL: adam.sinale@gmail.com
 #include "player.hpp"
 #include "game.hpp"
 #include "property.hpp"

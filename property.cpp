@@ -1,3 +1,5 @@
+// ID: 322453689
+// MAIL: adam.sinale@gmail.com
 #include "property.hpp"
 #include "player.hpp"
 
@@ -35,6 +37,7 @@ bool Railroad::whenLanded(shared_ptr<Player>& p){
 }
 int Railroad::calculateRent(){
     int rails = 0;
+    if(getOwner()==nullptr){ return 0; }
     for (const auto& property : getOwner()->getProperties()) {
         if (dynamic_cast<Railroad*>(property.get())) {
             rails++;
@@ -62,7 +65,7 @@ bool Street::whenLanded(shared_ptr<Player>& p){
             cout << "Wanna upgrade? You have " << p->getBalance() << " (y/n)" << endl;
             cin >> ans;
             if(ans=='y' || ans=='Y'){ 
-                numHouses++; p->changeBalance(-price);
+                addHouse(); p->changeBalance(-price);
                 cout << "You now have " << p->getBalance() << endl;
                 return true;
             }
@@ -125,7 +128,7 @@ bool Utility::whenLanded(shared_ptr<Player>& p){
 }
 
 bool Start::whenLanded(shared_ptr<Player>& p){
-    cout << "You landed on Tax! -100" << endl;
+    cout << "You landed Start! +400" << endl;
     p->changeBalance(200); 
     return false; 
 }
@@ -185,9 +188,10 @@ bool Back3Steps::whenLanded(shared_ptr<Player>& p){
 }
 bool Repair::whenLanded(shared_ptr<Player>& p){
     cout << "Make property repairs - 25$ per house, 100$ per hotel" << endl;
-    for(auto& s : p->getProperties()){
-        p->changeBalance(s->getNumHouses()*25);
-        if(s->getNumHouses()==5){ p->changeBalance(100-25); }
+    for(auto& sp : p->getProperties()){
+        shared_ptr<Street> s = std::dynamic_pointer_cast<Street>(sp);
+        if(s->getNumHouses()==5){ p->changeBalance(-100); }
+        else{ p->changeBalance(-s->getNumHouses()*25); }
     }
     return false;
 }

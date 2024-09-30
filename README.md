@@ -1,4 +1,4 @@
-# Monopoly Game Project
+# Monopoly Game Project - Adam Sin, 322453689
 
 This project is a C++ implementation of a Monopoly-like game with a graphical interface using SFML (Simple and Fast Multimedia Library).
 

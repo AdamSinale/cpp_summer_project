@@ -1,3 +1,5 @@
+// ID: 322453689
+// MAIL: adam.sinale@gmail.com
 #include "game.hpp"
 
 Game::Game(int pa){
