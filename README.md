@@ -9,12 +9,17 @@ This project is a C++ implementation of a Monopoly-like game with a graphical in
 - **board.cpp/board.hpp**: Manages the game board, including properties and player positions, and draws the game board using SFML.
 - **property.cpp/property.hpp**: Defines various types of properties (streets, utilities, railroads, etc.) and handles property-related mechanics such as rent collection.
 - **player.hpp**: Defines the `Player` class, including player actions like moving, buying properties, and handling jail situations.
+- **Test.cpp**: Testing each function of each Class, regarding every case.
 - **Makefile**: Build script for compiling the game, handling both system-wide SFML installations and local SFML directories.
 
 ## Prerequisites
 
 The project depends on SFML for rendering the graphical interface. You can either use the system-wide installation of SFML or the provided `SFML-2.5.1` folder included with the project.
 
+## Run by:
+  **game itself** make all -> ./monopoly
+  **tests** make tests -> ./test
+  
 ### System Requirements:
 - **C++17** or higher
 - **SFML** (system-wide or local)
